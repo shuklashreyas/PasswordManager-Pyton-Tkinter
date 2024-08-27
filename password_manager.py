@@ -60,25 +60,6 @@ class PasswordManager:
 
         messagebox.showinfo("Success", f"Password for {website} added!")
 
-    def authenticate_with_touch_id(self):
-        context = LocalAuthentication.LAContext.alloc().init()
-                
-        def callback(success, error):
-            if success:
-                self.touch_id_success = True
-            else:
-                self.touch_id_success = False
-                messagebox.showerror(
-                    "Authentication Failed",
-                    "Touch ID authentication failed."
-                )
-        context.evaluatePolicy_localizedReason_reply_(
-            LAPolicyDeviceOwnerAuthenticationWithBiometrics,
-            "Authenticate to view your passwords",
-            callback
-        )
-        return getattr(self, 'touch_id_success', False)
-
     def view_passwords(self):
         if self.authenticate_with_touch_id():
             conn = sqlite3.connect(self.db_name)
