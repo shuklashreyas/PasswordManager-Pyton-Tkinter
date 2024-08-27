@@ -1,5 +1,24 @@
 import sqlite3
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
+import LocalAuthentication
+from LocalAuthentication import LAPolicyDeviceOwnerAuthenticationWithBiometrics
+
+
+def authenticate_with_touch_id(self):
+    context = LocalAuthentication.LAContext.alloc().init()
+    success = context.evaluatePolicy_localizedReason_reply_(
+        LAPolicyDeviceOwnerAuthenticationWithBiometrics,
+        "Authenticate to view your passwords",
+        lambda success, error: success
+    )
+    if success:
+        return True
+    else:
+        messagebox.showerror(
+            "Authentication Failed",
+            "Touch ID authentication failed."
+        )
+        return False
 
 
 class PasswordManager:
@@ -40,12 +59,24 @@ class PasswordManager:
 
         messagebox.showinfo("Success", f"Password for {website} added!")
 
-    def view_passwords(self):
-        master_password = simpledialog.askstring(
-            "Master Password", "Enter the master password:", show='*'
+    def authenticate_with_touch_id(self):
+        context = LocalAuthentication.LAContext.alloc().init()
+        success = context.evaluatePolicy_localizedReason_reply_(
+            LAPolicyDeviceOwnerAuthenticationWithBiometrics,
+            "Authenticate to view your passwords",
+            lambda success, _: success
         )
+        if success:
+            return True
+        else:
+            messagebox.showerror(
+                "Authentication Failed",
+                "Touch ID authentication failed."
+            )
+        return False
 
-        if master_password == "masterpass":
+    def view_passwords(self):
+        if self.authenticate_with_touch_id():
             conn = sqlite3.connect(self.db_name)
             c = conn.cursor()
 
@@ -66,5 +97,3 @@ class PasswordManager:
                     )
             else:
                 messagebox.showinfo("Info", "No passwords stored.")
-        else:
-            messagebox.showerror("Error", "Invalid master password.")
