@@ -15,7 +15,6 @@ class PasswordManagerApp:
         self.password_manager = None
         self.current_user_id = None
 
-        # Load the background image
         self.background_image = Image.open("background.jpg")
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 

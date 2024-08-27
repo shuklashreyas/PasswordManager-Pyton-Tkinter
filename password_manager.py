@@ -37,7 +37,7 @@ class PasswordManager:
             if success:
                 on_success()
             else:
-                on_failure(error)
+                on_failure()
 
         context.evaluatePolicy_localizedReason_reply_(
             LAPolicyDeviceOwnerAuthenticationWithBiometrics,
@@ -64,8 +64,9 @@ class PasswordManager:
             conn = sqlite3.connect(self.db_name)
             c = conn.cursor()
 
+            # Fetch website, username, and password from the database
             c.execute(
-                ('SELECT website, password FROM passwords '
+                ('SELECT website, username, password FROM passwords '
                  'WHERE user_id = ?'),
                 (self.user_id,)
             )
@@ -79,9 +80,10 @@ class PasswordManager:
                 window.title("Stored Passwords")
 
                 # Create the Treeview
-                tree = Treeview(window, columns=("Website", "Password"),
-                                show="headings")
+                tree = Treeview(window, columns=("Website", "Username",
+                                                 "Password"), show="headings")
                 tree.heading("Website", text="Website")
+                tree.heading("Username", text="Username")
                 tree.heading("Password", text="Password")
 
                 # Insert the data into the Treeview
@@ -92,7 +94,7 @@ class PasswordManager:
             else:
                 messagebox.showinfo("Info", "No passwords stored.")
 
-        def on_failure(error):
+        def on_failure():
             messagebox.showerror(
                 "Authentication Failed",
                 "Touch ID authentication failed."
