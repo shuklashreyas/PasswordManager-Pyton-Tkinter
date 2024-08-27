@@ -12,6 +12,7 @@ def authenticate_with_touch_id(self):
         lambda success, error: success
     )
     if success:
+        self.touch_id_success = True
         return True
     else:
         messagebox.showerror(
@@ -61,19 +62,22 @@ class PasswordManager:
 
     def authenticate_with_touch_id(self):
         context = LocalAuthentication.LAContext.alloc().init()
-        success = context.evaluatePolicy_localizedReason_reply_(
+                
+        def callback(success, error):
+            if success:
+                self.touch_id_success = True
+            else:
+                self.touch_id_success = False
+                messagebox.showerror(
+                    "Authentication Failed",
+                    "Touch ID authentication failed."
+                )
+        context.evaluatePolicy_localizedReason_reply_(
             LAPolicyDeviceOwnerAuthenticationWithBiometrics,
             "Authenticate to view your passwords",
-            lambda success, _: success
+            callback
         )
-        if success:
-            return True
-        else:
-            messagebox.showerror(
-                "Authentication Failed",
-                "Touch ID authentication failed."
-            )
-        return False
+        return getattr(self, 'touch_id_success', False)
 
     def view_passwords(self):
         if self.authenticate_with_touch_id():
