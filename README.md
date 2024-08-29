@@ -1,5 +1,6 @@
 Password Manager
-Overview
+
+Overview:
 This Password Manager is a desktop application built with Python, using Tkinter for the graphical user interface (GUI). It allows users to securely store and manage their passwords, generate new strong passwords, and retrieve stored passwords when needed. The application utilizes SQLite for local data storage and supports macOS Touch ID for enhanced security. The application is designed to run on macOS and is packaged using py2app.
 
 Features
