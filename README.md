@@ -1,4 +1,4 @@
-# Password Manager
+# Password Manager (Tkinter GUI - SQLite Database)
 
 ## Overview
 
