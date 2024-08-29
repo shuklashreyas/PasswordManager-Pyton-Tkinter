@@ -11,14 +11,13 @@ Password Storage: Store and manage passwords for multiple accounts securely usin
 Password Generator: Generate strong, random passwords.
 Encryption: All passwords are encrypted before storage to ensure security.
 Cross-Platform: Designed to run on macOS.
-Installation
-Prerequisites
+
+Installation - Prerequisites
 Python 3.12 or later
 Homebrew (for macOS)
 Tkinter (installed by default with Python on macOS)
 SQLite3 (installed by default on macOS)
-Step 1: Clone the Repository
-Clone this repository to your local machine:
+Step 1: Clone the Repository Clone this repository to your local machine:
 
 bash
 Copy code
