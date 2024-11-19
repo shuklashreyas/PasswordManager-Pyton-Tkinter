@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "py2app"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PasswordManager"
+version = "0.1.0"
+
+[tool.py2app]
+app = ["main.py"]
+semi_standalone = true
+resources = [
+  "Azure-ttk-theme-main/azure.tcl",
+  "Azure-ttk-theme-main/theme/dark.tcl",
+  "Azure-ttk-theme-main/theme/light.tcl"
+]
+packages = ["Pillow", "tkinter"]
+plist = {
+  CFBundleName = "PasswordManager",
+  CFBundleDisplayName = "Password Manager",
+  CFBundleVersion = "0.1.0",
+  CFBundleShortVersionString = "0.1.0"
+}

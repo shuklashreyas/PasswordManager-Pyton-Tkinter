@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, simpledialog
-from tkinter import messagebox
+from tkinter import ttk, simpledialog, messagebox
 from user_manager import UserManager
 from password_manager import PasswordManager
 
@@ -59,17 +58,17 @@ class PasswordManagerApp:
 
         ttk.Label(self.main_frame, text="Sign Up",
                   font=("Helvetica", 20, "bold"),
-                  background="#1c1c1c", foreground="white").pack(pady=10)
+                  foreground="black").pack(pady=10)
 
         ttk.Label(self.main_frame, text="Create Username:",
-                  background="#1c1c1c", foreground="white",
+                  foreground="black",
                   font=("Helvetica", 14)).pack(pady=5)
         self.new_username_entry = ttk.Entry(self.main_frame,
                                             font=("Helvetica", 14))
         self.new_username_entry.pack(pady=5)
 
         ttk.Label(self.main_frame, text="Create Password:",
-                  background="#1c1c1c", foreground="white",
+                  foreground="black",
                   font=("Helvetica", 14)).pack(pady=5)
         self.new_password_entry = ttk.Entry(self.main_frame, show="*",
                                             font=("Helvetica", 14))
@@ -93,6 +92,9 @@ class PasswordManagerApp:
                    padding=(10, 5)).pack(pady=10)
         ttk.Button(self.main_frame, text="View Passwords",
                    command=self.view_passwords, style="Accent.TButton",
+                   padding=(10, 5)).pack(pady=10)
+        ttk.Button(self.main_frame, text="Go Back",
+                   command=self.show_login_screen, style="Accent.TButton",
                    padding=(10, 5)).pack(pady=10)
 
     def login(self):

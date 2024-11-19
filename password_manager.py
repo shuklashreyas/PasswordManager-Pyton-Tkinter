@@ -1,5 +1,5 @@
 import sqlite3
-from tkinter import messagebox, Tk, Toplevel
+from tkinter import messagebox, Toplevel
 from tkinter.ttk import Treeview
 import LocalAuthentication
 from LocalAuthentication import LAPolicyDeviceOwnerAuthenticationWithBiometrics
@@ -59,6 +59,15 @@ class PasswordManager:
 
         messagebox.showinfo("Success", f"Password for {website} added!")
 
+    def delete_password(self, password_id):
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+
+        c.execute('DELETE FROM passwords WHERE id = ?', (password_id,))
+
+        conn.commit()
+        conn.close()
+
     def view_passwords(self):
         def on_success():
             conn = sqlite3.connect(self.db_name)
@@ -66,7 +75,7 @@ class PasswordManager:
 
             # Fetch website, username, and password from the database
             c.execute(
-                ('SELECT website, username, password FROM passwords '
+                ('SELECT id, website, username, password FROM passwords '
                  'WHERE user_id = ?'),
                 (self.user_id,)
             )
@@ -80,8 +89,10 @@ class PasswordManager:
                 window.title("Stored Passwords")
 
                 # Create the Treeview
-                tree = Treeview(window, columns=("Website", "Username",
-                                                 "Password"), show="headings")
+                tree = Treeview(window, columns=("ID", "Website",
+                                                 "Username", "Password"),
+                                show="headings")
+                tree.heading("ID", text="ID")
                 tree.heading("Website", text="Website")
                 tree.heading("Username", text="Username")
                 tree.heading("Password", text="Password")
@@ -91,6 +102,22 @@ class PasswordManager:
                     tree.insert("", "end", values=pw)
 
                 tree.pack(fill="both", expand=True)
+
+                # Bind delete functionality to treeview selection
+                def delete_selected_password(event):
+                    selected_item = tree.selection()
+                    if selected_item:
+                        selected_password = tree.item(selected_item)['values']
+                        id_to_delete = selected_password[0]
+                        confirm = messagebox.askyesno(
+                            "Confirm Deletion",
+                            "Are you sure you want to delete this password?"
+                        )
+                        if confirm:
+                            self.delete_password(id_to_delete)
+                            tree.delete(selected_item)
+
+                tree.bind('<Delete>', delete_selected_password)
             else:
                 messagebox.showinfo("Info", "No passwords stored.")
 
@@ -105,7 +132,7 @@ class PasswordManager:
 
 # Example usage
 if __name__ == "__main__":
-    root = Tk()
+    root = Toplevel()
     root.withdraw()  # Hide the root window
     manager = PasswordManager(user_id=1)  # Replace with actual user_id
     manager.view_passwords()
