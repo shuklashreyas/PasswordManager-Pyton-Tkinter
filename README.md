@@ -14,6 +14,16 @@ This Password Manager is a desktop application built with Python, using Tkinter 
 - **Encryption:** All passwords are encrypted before storage to ensure security.
 - **Cross-Platform:** Designed to run on macOS.
 
+![Screenshot of Login Page](singup.png)
+![Screenshot of Login Page](login.png)
+![Screenshot of Login Page](mainmenu.png)
+![Screenshot of Login Page](storedpass.png)
+
+Adding password not shown but very simple, just input fields for website name - username - password. Everytime you want to view password you use fingerprint id or mac password
+
+
+
+
 ### Prerequisites
 
 - Python 3.12 or later
